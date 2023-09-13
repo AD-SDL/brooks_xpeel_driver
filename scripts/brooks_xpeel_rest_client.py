@@ -117,6 +117,9 @@ def do_action(
 
 if __name__ == "__main__":
     import uvicorn
-    import a4s_peeler_client
-    print(a4s_peeler_client)
-    uvicorn.run("a4s_peeler_client.app", host=local_ip, port=local_port, reload=True)
+    parser = ArgumentParser()
+    parser.add_argument("--alias", type=str, help="Name of the Node")
+    parser.add_argument("--host", type=str, help="Host for rest")
+    parser.add_argument("--port", type=int, help="port value")
+    args = parser.parse_args()
+    uvicorn.run("brooks_xpeel_rest_client:app", host=args.host, port=args.port, reload=False, ws_max_size=100000000000000000000000000000000000000)
