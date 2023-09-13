@@ -3,17 +3,13 @@ from setuptools import setup, find_packages
 
 install_requires = ['pyserial']
 
-package_name = 'brooks_peeler_driver'
+package_name = 'brooks_xpeel_driver'
 
 setup(
-    name='brooks_peeler_driver',
+    name='brooks_xpeel_driver',
     version='0.0.1',
     packages=find_packages(),
-    data_files=[
-        ('share/ament_index/resource_index/packages',
-            ['resource/' + package_name]),
-        ('share/' + package_name, ['package.xml']),
-    ],
+    data_files=[],
     install_requires=install_requires,
     zip_safe=True,
     python_requires=">=3.8",

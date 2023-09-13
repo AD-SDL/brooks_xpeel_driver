@@ -6,7 +6,7 @@ import time
 from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.responses import JSONResponse
 
-from brooks_peeler_driver.brooks_peeler_driver.brooks_peeler_driver import BROOKS_PEELER_DRIVER
+from brooks_xpeel_driver.brooks_xpeel_driver import BROOKS_PEELER_DRIVER
 workcell = None
 global peeler, state
 serial_port = '/dev/ttyUSB0'
