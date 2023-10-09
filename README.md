@@ -1,12 +1,5 @@
 # Brooks XPeel 
 
-
-## Authors and Maintainers
-* Sanjiv Parthasarathy
-* Rafael Vescovi
-* Doga Ozgulbas
-<p>&nbsp;</p>
-
 ## Description
 A repository for Brooks XPeel, including user manuals and remote control interfaces.
 
