@@ -7,10 +7,11 @@ from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.responses import JSONResponse
 
 from brooks_xpeel_driver.brooks_xpeel_driver import BROOKS_PEELER_DRIVER
+
 workcell = None
 global peeler, state
-serial_port = '/dev/ttyUSB0'
-local_ip = 'parker.alcf.anl.gov'
+serial_port = "/dev/ttyUSB0"
+local_ip = "parker.alcf.anl.gov"
 local_port = 8000
 
 
@@ -27,11 +28,11 @@ async def lifespan(app: FastAPI):
         -------
         None"""
     try:
-            peeler = BROOKS_PEELER_DRIVER(serial_port)
-            state = "IDLE"
+        peeler = BROOKS_PEELER_DRIVER(serial_port)
+        state = "IDLE"
     except Exception as err:
-            print(err)
-            state = "ERROR"
+        print(err)
+        state = "ERROR"
 
     # Yield control to the application
     yield
@@ -40,7 +41,10 @@ async def lifespan(app: FastAPI):
     pass
 
 
-app = FastAPI(lifespan=lifespan, )
+app = FastAPI(
+    lifespan=lifespan,
+)
+
 
 @app.get("/state")
 def get_state():
@@ -48,78 +52,87 @@ def get_state():
     if state != "BUSY":
         peeler.get_status()
         if peeler.status_msg == 3:
-                    msg.data = 'State: ERROR'
-                    state = "ERROR"
+            msg.data = "State: ERROR"
+            state = "ERROR"
 
         elif peeler.status_msg == 0:
-                    state = "IDLE"
-    
-                
-    return JSONResponse(content={"State": state})#peeler.get_status() })
+            state = "IDLE"
+
+    return JSONResponse(content={"State": state})  # peeler.get_status() })
+
 
 @app.get("/about")
 async def about():
     global peeler, state
-    return JSONResponse(content={"name": "peeler",
- "model": "Brooks_Xpeel",
- "version": "0.0.1",
- "actions": {
-             "peel": "config : %s",  
-             },
-"repo": "https://github.com/AD-SDL/a4s_sealer_rest_node/edit/main/a4s_sealer_client.py"
+    return JSONResponse(
+        content={
+            "name": "peeler",
+            "model": "Brooks_Xpeel",
+            "version": "0.0.1",
+            "actions": {
+                "peel": "config : %s",
+            },
+            "repo": "https://github.com/AD-SDL/a4s_sealer_rest_node/edit/main/a4s_sealer_client.py",
+        }
+    )
 
- 
- })
- #sealer.get_status() })
+
+# sealer.get_status() })
+
 
 @app.get("/resources")
 async def resources():
     global peeler, state
-    return JSONResponse(content={"State": state })#peeler.get_status() })
+    return JSONResponse(content={"State": state})  # peeler.get_status() })
 
 
 @app.post("/action")
 def do_action(
     action_handle: str,
-    action_vars: str, 
+    action_vars: str,
 ):
 
     global peeler, state
     state = "BUSY"
-    if action_handle == 'peel':  
-        #self.peeler.set_time(3)
-        #self.peeler.set_temp(175)]
-      
-        try: 
+    if action_handle == "peel":
+        # self.peeler.set_time(3)
+        # self.peeler.set_temp(175)]
+
+        try:
             print("peeling")
             peeler.seal_check
             peeler.peel(1, 2.5)
-            time.sleep(15)  
+            time.sleep(15)
             response_content = {
-                    "action_msg": "StepStatus.Succeeded",
-                    "action_response": "True",
-                    "action_log": ""
-                    
-                    
-                }
+                "action_msg": "Peeling successful",
+                "action_response": "succeeded",
+                "action_log": "",
+            }
             state = "IDLE"
             return JSONResponse(content=response_content)
         except Exception as e:
             response_content = {
-            "status": "failed",
-            "error": str(e),
-           
-        }
+                "action_response": "failed",
+                "action_msg": "",
+                "action_log": str(e),
+            }
             print(e)
             state = "IDLE"
             return JSONResponse(content=response_content)
-   
+
 
 if __name__ == "__main__":
     import uvicorn
+
     parser = ArgumentParser()
     parser.add_argument("--alias", type=str, help="Name of the Node")
     parser.add_argument("--host", type=str, help="Host for rest")
     parser.add_argument("--port", type=int, help="port value")
     args = parser.parse_args()
-    uvicorn.run("brooks_xpeel_rest_client:app", host=args.host, port=args.port, reload=False, ws_max_size=100000000000000000000000000000000000000)
+    uvicorn.run(
+        "brooks_xpeel_rest_client:app",
+        host=args.host,
+        port=args.port,
+        reload=False,
+        ws_max_size=100000000000000000000000000000000000000,
+    )
