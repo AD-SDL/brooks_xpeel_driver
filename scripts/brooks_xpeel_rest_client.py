@@ -8,11 +8,14 @@ from fastapi.responses import JSONResponse
 
 from brooks_xpeel_driver.brooks_xpeel_driver import BROOKS_PEELER_DRIVER
 
-workcell = None
+
 global peeler, state
-serial_port = "/dev/ttyUSB0"
-local_ip = "parker.alcf.anl.gov"
-local_port = 8000
+
+parser = ArgumentParser()
+parser.add_argument("--host", type=str, default="0.0.0.0", help="Hostname that the REST API will be accessible on")
+parser.add_argument("--port", type=int, default=2001)
+parser.add_argument("--device", type=str, default="/dev/ttyUSB1", help="Serial device for communicating with the device")
+args = parser.parse_args()
 
 
 @asynccontextmanager
@@ -28,7 +31,7 @@ async def lifespan(app: FastAPI):
         -------
         None"""
     try:
-        peeler = BROOKS_PEELER_DRIVER(serial_port)
+        peeler = BROOKS_PEELER_DRIVER(args.device)
         state = "IDLE"
     except Exception as err:
         print(err)
@@ -52,13 +55,11 @@ def get_state():
     if state != "BUSY":
         peeler.get_status()
         if peeler.status_msg == 3:
-            msg.data = "State: ERROR"
             state = "ERROR"
-
         elif peeler.status_msg == 0:
             state = "IDLE"
 
-    return JSONResponse(content={"State": state})  # peeler.get_status() })
+    return JSONResponse(content={"State": state})
 
 
 @app.get("/about")
@@ -76,14 +77,10 @@ async def about():
         }
     )
 
-
-# sealer.get_status() })
-
-
 @app.get("/resources")
 async def resources():
     global peeler, state
-    return JSONResponse(content={"State": state})  # peeler.get_status() })
+    return JSONResponse(content={"State": state})
 
 
 @app.post("/action")
@@ -124,15 +121,9 @@ def do_action(
 if __name__ == "__main__":
     import uvicorn
 
-    parser = ArgumentParser()
-    parser.add_argument("--alias", type=str, help="Name of the Node")
-    parser.add_argument("--host", type=str, help="Host for rest")
-    parser.add_argument("--port", type=int, help="port value")
-    args = parser.parse_args()
     uvicorn.run(
         "brooks_xpeel_rest_client:app",
         host=args.host,
         port=args.port,
         reload=False,
-        ws_max_size=100000000000000000000000000000000000000,
     )
