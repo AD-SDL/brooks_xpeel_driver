@@ -5,6 +5,16 @@ from contextlib import asynccontextmanager
 import time
 from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.responses import JSONResponse
+from pathlib import Path
+from wei.core.data_classes import (
+    ModuleAbout,
+    ModuleAction,
+    ModuleActionArg,
+    ModuleStatus,
+    StepResponse,
+    StepStatus,
+)
+from wei.helpers import extract_version
 
 from brooks_xpeel_driver.brooks_xpeel_driver import BROOKS_PEELER_DRIVER
 
@@ -61,21 +71,24 @@ def get_state():
 
     return JSONResponse(content={"State": state})
 
-
 @app.get("/about")
-async def about():
+async def about() -> JSONResponse:
+    """Returns a description of the actions and resources the module supports"""
     global peeler, state
-    return JSONResponse(
-        content={
-            "name": "peeler",
-            "model": "Brooks_Xpeel",
-            "version": "0.0.1",
-            "actions": {
-                "peel": "config : %s",
-            },
-            "repo": "https://github.com/AD-SDL/a4s_sealer_rest_node/edit/main/a4s_sealer_client.py",
-        }
+    about = ModuleAbout(
+        name="Peeler Robot",
+        description="Peeler is a robotic peeler module that will peal the film off of a plate.",
+        interface="wei_rest_node",
+        version=extract_version(Path(__file__).parent.parent / "pyproject.toml"),
+        actions=[
+            ModuleAction(
+                name="peel",
+                description="peels the film off of a plate.",
+            ), 
+        ],
+        resource_pools=[],
     )
+    return JSONResponse(content=about.model_dump(mode="json"))
 
 @app.get("/resources")
 async def resources():
