@@ -73,7 +73,7 @@ async def about():
             "actions": {
                 "peel": "config : %s",
             },
-            "repo": "https://github.com/AD-SDL/a4s_sealer_rest_node/edit/main/a4s_sealer_client.py",
+            "repo": "https://github.com/AD-SDL/brooks_xpeel_module.git",
         }
     )
 
@@ -122,7 +122,7 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(
-        "brooks_xpeel_rest_client:app",
+        "brooks_xpeel_rest_node:app",
         host=args.host,
         port=args.port,
         reload=False,
