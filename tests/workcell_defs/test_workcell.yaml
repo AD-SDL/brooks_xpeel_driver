@@ -10,7 +10,7 @@ config:
 #List of all components accessible in this workcell
 modules:
 
-  - name: peeler
+  - name: brooks_xpeel_module
     model: Brooks Automation peeler
     interface: wei_rest_node
     config:
