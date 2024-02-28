@@ -1,0 +1,20 @@
+name: brooks_xpeel_module
+services:
+  brooks_xpeel_module:
+    container_name: brooks_xpeel_module
+    image: ${IMAGE}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      tags:
+        - ${IMAGE}:latest
+        - ${IMAGE}:${PROJECT_VERSION}
+        - ${IMAGE}:dev
+    command: python brooks_xpeel_module/scripts/brooks_xpeel_rest_node.py --port 2001 --device ${XPEEL_DEVICE} 
+    privileged: true
+    env_file: .env
+    volumes:
+      - ./scripts:/home/app/brooks_xpeel_module/scripts
+      - ./tests:/home/app/brooks_xpeel_module/tests
+    ports:
+      - 2001:2001

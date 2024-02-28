@@ -10,17 +10,11 @@ from brooks_xpeel_driver.brooks_xpeel_driver import BROOKS_PEELER_DRIVER
 
 
 global peeler, state
-
-parser = ArgumentParser()
-parser.add_argument("--host", type=str, default="0.0.0.0", help="Hostname that the REST API will be accessible on")
-parser.add_argument("--port", type=int, default=2001)
-parser.add_argument("--device", type=str, default="/dev/ttyUSB1", help="Serial device for communicating with the device")
-args = parser.parse_args()
-
+device = ""
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global peeler, state
+    global peeler, state, device
     """Initial run function for the app, parses the worcell argument
         Parameters
         ----------
@@ -31,7 +25,7 @@ async def lifespan(app: FastAPI):
         -------
         None"""
     try:
-        peeler = BROOKS_PEELER_DRIVER(args.device)
+        peeler = BROOKS_PEELER_DRIVER(device)
         state = "IDLE"
     except Exception as err:
         print(err)
@@ -73,7 +67,7 @@ async def about():
             "actions": {
                 "peel": "config : %s",
             },
-            "repo": "https://github.com/AD-SDL/a4s_sealer_rest_node/edit/main/a4s_sealer_client.py",
+            "repo": "https://github.com/AD-SDL/brooks_xpeel_module.git",
         }
     )
 
@@ -120,9 +114,15 @@ def do_action(
 
 if __name__ == "__main__":
     import uvicorn
+    parser = ArgumentParser()
+    parser.add_argument("--host", type=str, default="0.0.0.0", help="Hostname that the REST API will be accessible on")
+    parser.add_argument("--port", type=int, default=2001)
+    parser.add_argument("--device", type=str, default="/dev/ttyUSB1", help="Serial device for communicating with the device")
+    args = parser.parse_args()
+    device = args.device
 
     uvicorn.run(
-        "brooks_xpeel_rest_client:app",
+        "brooks_xpeel_rest_node:app",
         host=args.host,
         port=args.port,
         reload=False,
