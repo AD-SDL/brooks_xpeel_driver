@@ -7,7 +7,7 @@ from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.responses import JSONResponse
 
 from brooks_xpeel_driver.brooks_xpeel_driver import BROOKS_PEELER_DRIVER
-
+from wei.core.data_classes import ModuleAbout, ModuleActions
 
 global peeler, state
 device = ""
@@ -59,17 +59,25 @@ def get_state():
 @app.get("/about")
 async def about():
     global peeler, state
-    return JSONResponse(
-        content={
-            "name": "peeler",
-            "model": "Brooks_Xpeel",
-            "version": "0.0.1",
-            "actions": {
-                "peel": "config : %s",
-            },
-            "repo": "https://github.com/AD-SDL/brooks_xpeel_module.git",
-        }
+    about = ModuleAbout(
+        name="Brooks Xpeel",
+        description="Brooks Xpeel is a  module that can peel covers off plates.",
+        interface="wei_rest_node",
+        version=extract_version(Path(__file__).parent.parent / "pyproject.toml"),
+        actions=[
+            ModuleAction(
+                name="peel",
+                description="This action peels a plate that is currenly in the peeling station.",
+                args=[
+                    
+                ],
+            )
+        ],
+        resource_pools=[],
     )
+    return JSONResponse(content=about.model_dump(mode="json"))
+
+    
 
 @app.get("/resources")
 async def resources():
