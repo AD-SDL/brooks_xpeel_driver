@@ -25,7 +25,7 @@ parser.add_argument("--port", type=int, default=2001)
 parser.add_argument(
     "--device",
     type=str,
-    default="/dev/ttyUSB1",
+    default="/dev/ttyUSB0",
     help="Serial device for communicating with the device",
 )
 args = parser.parse_args()
