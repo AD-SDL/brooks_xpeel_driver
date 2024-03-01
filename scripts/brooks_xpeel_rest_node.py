@@ -1,10 +1,9 @@
 """The server that takes incoming WEI flow requests from the experiment application"""
 
-import json
 from argparse import ArgumentParser
 from contextlib import asynccontextmanager
 import time
-from fastapi import FastAPI, File, Form, UploadFile
+from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
 from brooks_xpeel_driver.brooks_xpeel_driver import BROOKS_PEELER_DRIVER
@@ -12,6 +11,23 @@ from wei.core.data_classes import ModuleAbout, ModuleAction
 
 global peeler, state
 device = ""
+
+parser = ArgumentParser()
+parser.add_argument(
+    "--host",
+    type=str,
+    default="0.0.0.0",
+    help="Hostname that the REST API will be accessible on",
+)
+parser.add_argument("--port", type=int, default=2001)
+parser.add_argument(
+    "--device",
+    type=str,
+    default="/dev/ttyUSB1",
+    help="Serial device for communicating with the device",
+)
+args = parser.parse_args()
+device = args.device
 
 
 @asynccontextmanager
@@ -121,23 +137,6 @@ def do_action(
 
 if __name__ == "__main__":
     import uvicorn
-
-    parser = ArgumentParser()
-    parser.add_argument(
-        "--host",
-        type=str,
-        default="0.0.0.0",
-        help="Hostname that the REST API will be accessible on",
-    )
-    parser.add_argument("--port", type=int, default=2001)
-    parser.add_argument(
-        "--device",
-        type=str,
-        default="/dev/ttyUSB1",
-        help="Serial device for communicating with the device",
-    )
-    args = parser.parse_args()
-    device = args.device
 
     uvicorn.run(
         "brooks_xpeel_rest_node:app",
