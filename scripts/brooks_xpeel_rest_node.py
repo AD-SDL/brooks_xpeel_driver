@@ -9,6 +9,7 @@ from fastapi.responses import JSONResponse
 from brooks_xpeel_driver.brooks_xpeel_driver import BROOKS_PEELER_DRIVER
 from wei.core.data_classes import ModuleAbout, ModuleAction
 from wei.helpers import extract_version
+from pathlib import Path
 
 global peeler, state
 device = ""
