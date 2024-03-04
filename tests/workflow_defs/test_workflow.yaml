@@ -11,5 +11,4 @@ flowdef:
   - name: Transfer
     module: brooks_xpeel_module
     action: peel
-    args:
-      foo: bar
+    args: {}
