@@ -13,4 +13,3 @@ flowdef:
     action: peel
     args:
       foo: bar
-

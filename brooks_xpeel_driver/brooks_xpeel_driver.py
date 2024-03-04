@@ -1,7 +1,7 @@
-import time
-import serial
-import logging
 import re
+import time
+
+import serial
 
 # Log Configuration
 # file_path = os.path.join(os.path.split(os.path.dirname(__file__))[0]  + '/sealer_logs/sealer_logs.log')

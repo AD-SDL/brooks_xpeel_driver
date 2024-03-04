@@ -1,15 +1,16 @@
 """The server that takes incoming WEI flow requests from the experiment application"""
 
+import time
 from argparse import ArgumentParser
 from contextlib import asynccontextmanager
-import time
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
-
-from brooks_xpeel_driver.brooks_xpeel_driver import BROOKS_PEELER_DRIVER
 from wei.core.data_classes import ModuleAbout, ModuleAction
 from wei.helpers import extract_version
-from pathlib import Path
+
+from brooks_xpeel_driver.brooks_xpeel_driver import BROOKS_PEELER_DRIVER
 
 global peeler, state
 device = ""
@@ -107,7 +108,6 @@ def do_action(
     action_handle: str,
     action_vars: str,
 ):
-
     global peeler, state
     state = "BUSY"
     if action_handle == "peel":

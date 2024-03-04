@@ -10,7 +10,7 @@ services:
         - ${IMAGE}:latest
         - ${IMAGE}:${PROJECT_VERSION}
         - ${IMAGE}:dev
-    command: python brooks_xpeel_module/scripts/brooks_xpeel_rest_node.py --port 2001 --device ${XPEEL_DEVICE} 
+    command: python brooks_xpeel_module/scripts/brooks_xpeel_rest_node.py --port 2001 --device ${XPEEL_DEVICE}
     privileged: true
     env_file: .env
     volumes:

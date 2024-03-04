@@ -1,4 +1,4 @@
-# Brooks XPeel 
+# Brooks XPeel
 
 ## Description
 A repository for Brooks XPeel, including user manuals and remote control interfaces.
@@ -12,7 +12,7 @@ Peeler is the main object responsible for removing seals off of microplates
 * Peeler initialization
 * Peeler information (version number, current status, tape remaining, etc.)
 * Basic movements (move conveyor, spool, reset microplate, etc.)
-* Execute peeling 
+* Execute peeling
 * Change sensor threshold value
 * Displays up to 3 error messages at at ime
 <p>&nbsp;</p>
@@ -21,7 +21,7 @@ Peeler is the main object responsible for removing seals off of microplates
 
 1. ### Git Clone azenta_driver repository
 	In terminal:
-	
+
 		git clone <insert link>
 
 2. ### Launching azenta driver on personal device
@@ -36,10 +36,10 @@ Peeler is the main object responsible for removing seals off of microplates
 
 3. ### Sending commands to XPeel:
 	* Connect XPeel Driver to device with a serial to usb cable.
-	* Find XPeel port ex: "/dev/ttyUSB0" 
+	* Find XPeel port ex: "/dev/ttyUSB0"
 
    	In Python:
-    
+
 		from azenta_driver.peeler_client import BROOKS_PEELER_CLIENT
 		peeler = BROOKS_PEELER_CLIENT(port)
 
@@ -47,13 +47,13 @@ Peeler is the main object responsible for removing seals off of microplates
 <p>&nbsp;</p>
 
 ## Commands
-	   
+
 1.     peeler.check_status()
 
 Identifies up to 3 errors currently present.
 <p>&nbsp;</p>
 
-2.     peeler.check_version() 
+2.     peeler.check_version()
 
 Identifies the XPeel virmware version.
 <p>&nbsp;</p>
@@ -171,7 +171,7 @@ This command causes the spool to advance approximately 10mm of tape.
 2. When a command is called a corresponding string is sent to the peeler.
 3. The Peeler interprets this string and ouputs data/performs an action accordingly.
 4. Python interprets output data from Peeler and displays messages while decoding error messages.
-		
+
 <p>&nbsp;</p>
 
 ## Python Dependencies
@@ -181,11 +181,9 @@ Required packages:
 * Serial Package Installation:
 
 	    python -m pip install pyserial
-    
+
 	    conda install pyserial
 
-* Regex Package installation: 
+* Regex Package installation:
 
         pip install regex
-
-
