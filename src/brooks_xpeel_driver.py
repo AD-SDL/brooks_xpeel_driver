@@ -1,11 +1,9 @@
+"""Driver code to communicate with and control a Brooks Xpeel Peeler instrument."""
+
 import re
 import time
 
 import serial
-
-# Log Configuration
-# file_path = os.path.join(os.path.split(os.path.dirname(__file__))[0]  + '/sealer_logs/sealer_logs.log')
-# logging.basicConfig(filename = file_path, level=logging.DEBUG, format = '[%(levelname)s] [%(asctime)s] [%(name)s] %(message)s', datefmt = '%Y-%m-%d %H:%M:%S')
 
 
 class BROOKS_PEELER_DRIVER:
@@ -38,8 +36,8 @@ class BROOKS_PEELER_DRIVER:
 
         try:
             self.connection = serial.Serial(self.host_path, self.baud_rate)
-        except:
-            raise Exception("Could not establish connection")
+        except Exception as e:
+            raise Exception("Could not establish connection") from e
 
     def response_fun(self, time_wait):
         """
@@ -59,7 +57,7 @@ class BROOKS_PEELER_DRIVER:
 
     def send_command(self, command, success_msg, err_msg, timeout=1):
         """
-        Sends provided command to Peeler and stores data outputted by the peelr.
+        Sends provided command to Peeler and stores data outputted by the peeler.
         Indicates when the confirmation that the Peeler received the command by displaying 'ACK TRUE.'
         """
 
@@ -145,11 +143,11 @@ class BROOKS_PEELER_DRIVER:
         err_msg = "Displaying status:"
 
         status_response = self.send_command(cmd_string, success_msg, err_msg)
-        msg_beggining = "*"
+        msg_beginning = "*"
         msg_end = ":"
         self.status_msg = status_response[
-            status_response.find(msg_beggining)
-            + len(msg_beggining) : status_response.rfind(msg_end)
+            status_response.find(msg_beginning)
+            + len(msg_beginning) : status_response.rfind(msg_end)
         ].upper()
         return status_response
 
@@ -196,7 +194,7 @@ class BROOKS_PEELER_DRIVER:
 
     def peel(self, param_set_num, param_time):
         """
-        Removes seal based on the paramaters given for the location to start peeling, the speed, and adhere time.
+        Removes seal based on the parameters given for the location to start peeling, the speed, and adhere time.
         """
         self.movement_state = "BUSY"
 
@@ -402,18 +400,9 @@ class BROOKS_PEELER_DRIVER:
 
 if __name__ == "__main__":
     """
-    Runs given function.
+    Runs get status function.
     """
 
     peeler = BROOKS_PEELER_DRIVER("/dev/ttyUSB1")
-    # for i in range(20):
-    #     peeler.get_status()
-    #     print(peeler.status_msg)
-    #     time.sleep(1)
-    # print(peeler.peeler_output)
-    # print(peeler.error_msg)
     peeler.get_status()
     print(peeler.status_msg)
-
-    # print(peeler.peel(1,2.5))
-    # print(peeler.get_status())
