@@ -15,10 +15,10 @@ class TestImports(TestModule_Base):
     def test_driver_import(self):
         """Test the driver and rest node imports"""
         import brooks_xpeel_driver
-        import brooks_xpeel_rest_node
+        import old_node
 
         assert brooks_xpeel_driver
-        assert brooks_xpeel_rest_node
+        assert old_node
 
 
 if __name__ == "__main__":
