@@ -1,4 +1,4 @@
-"""REST-based node for A4S Sealer device"""
+"""REST-based node for Brooks Xpeel device"""
 import datetime
 import time
 from pathlib import Path
@@ -49,16 +49,18 @@ def state(state: State):
 
 @rest_module.action(
     name="peel",
-    description="Executes a sealing cycle on the Peeler device",
+    description="Executes a peeling cycle on the Peeler device",
 )
-def seal(state: State, action: ActionRequest) -> StepResponse:
+def peel(state: State, action: ActionRequest) -> StepResponse:
     """
     Peel a plate
     """
-    state.sealer.seal()
+    print("peeling")
+    state.peeler.seal_check()
+    state.peeler.peel(1, 2.5)
     time.sleep(15)
 
-    return StepResponse(action_msg="Sealing successful", action_response=StepStatus.SUCCEEDED)
+    return StepResponse(action_msg="Peeling successful", action_response=StepStatus.SUCCEEDED)
 
 
 if __name__ == "__main__":
