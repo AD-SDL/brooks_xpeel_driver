@@ -38,10 +38,10 @@ def state(state: State):
     if state.status not in [ModuleStatus.BUSY, ModuleStatus.ERROR, ModuleStatus.INIT, None] or (
         state.action_start and (datetime.datetime.now() - state.action_start > datetime.timedelta(0, 2))
     ):
-        state.sealer.get_status()
-        if state.sealer.status_msg == 3:
+        state.peeler.get_status()
+        if state.peeler.status_msg == 3:
             state.status = ModuleStatus.ERROR
-        elif state.sealer.status_msg == 0:
+        elif state.peeler.status_msg == 0:
             state.status = ModuleStatus.IDLE
 
     return ModuleState(status=state.status, error="")
