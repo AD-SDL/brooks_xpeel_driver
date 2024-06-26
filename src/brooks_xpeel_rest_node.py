@@ -41,10 +41,8 @@ def state(state: State):
         ModuleStatus.ERROR,
         ModuleStatus.INIT,
         None,
-    ] or (
-        state.action_start
-        and (datetime.datetime.now() - state.action_start > datetime.timedelta(0, 2))
-    ):
+    ]:
+        print(state.status)
         state.peeler.get_status()
         if state.peeler.status_msg == 3:
             state.status = ModuleStatus.ERROR
@@ -63,6 +61,7 @@ def peel(state: State, action: ActionRequest) -> StepResponse:
     Peel a plate
     """
     print("peeling")
+    time.sleep(1)
     state.peeler.seal_check()
     state.peeler.peel(1, 2.5)
     time.sleep(15)
