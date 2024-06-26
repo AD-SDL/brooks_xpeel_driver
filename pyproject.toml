@@ -1,10 +1,14 @@
 [project]
 name = "brooks_xpeel_module"
-version = "0.2.0"
+version = "0.3.0"
 description = "Software for automatting a brooks_xpeel Peeler "
 authors = [
-    {name = "Ryan D. Lewis", email="ryan.lewis@anl.gov"},
-    {name = "Rafael Vescovi", email="ravescovi@anl.gov"},
+    {name = "Rafael Vescovi", email = "ravescovi@anl.gov"},
+    {name = "Tobias Ginsburg", email = "tginsburg@anl.gov"},
+    {name = "Ryan D. Lewis", email = "ryan.lewis@anl.gov"},
+    {name = "Casey Stone", email = "cstone@anl.gov"},
+    {name = "Doga Ozgulbas", email = "dozgulbas@anl.gov"},
+    {name = "Kyle Hippe", email = "khippe@anl.gov"},
 ]
 dependencies = [
     "ad_sdl.wei>=0.5.3",
