@@ -48,11 +48,12 @@ class BROOKS_PEELER_DRIVER:
         while time.time() - response_timer < time_wait:
             if self.connection.in_waiting != 0:
                 response = self.connection.read_until(expected=b"\r")
-                print(response)
+                # print(response)
                 response_string = response.decode("utf-8")
                 break
             else:
                 response_string = ""
+        # print(response_string)
         return response_string
 
     def send_command(self, command, success_msg, err_msg, timeout=1):
@@ -406,3 +407,4 @@ if __name__ == "__main__":
     peeler = BROOKS_PEELER_DRIVER("/dev/ttyUSB1")
     peeler.get_status()
     print(peeler.status_msg)
+    peeler.seal_check()
