@@ -1,6 +1,5 @@
 """REST-based node for Brooks Xpeel device"""
 
-import datetime
 import time
 from pathlib import Path
 
