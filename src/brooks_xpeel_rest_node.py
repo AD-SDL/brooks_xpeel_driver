@@ -3,12 +3,13 @@
 import time
 from pathlib import Path
 
-from brooks_xpeel_driver import BROOKS_PEELER_DRIVER
 from fastapi.datastructures import State
 from wei.modules.rest_module import RESTModule
 from wei.types.module_types import ModuleState, ModuleStatus
-from wei.types.step_types import ActionRequest, StepResponse, StepStatus
+from wei.types.step_types import ActionRequest, StepResponse, StepSucceeded
 from wei.utils import extract_version
+
+from brooks_xpeel_driver import BROOKS_PEELER_DRIVER
 
 rest_module = RESTModule(
     name="peeler_node",
@@ -65,9 +66,7 @@ def peel(state: State, action: ActionRequest) -> StepResponse:
     state.peeler.peel(1, 2.5)
     time.sleep(15)
 
-    return StepResponse(
-        action_msg="Peeling successful", action_response=StepStatus.SUCCEEDED
-    )
+    return StepSucceeded()
 
 
 if __name__ == "__main__":
